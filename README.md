@@ -1,73 +1,97 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# NestJS Clean Architecture Template
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This repository provides a template for building applications using NestJS and Clean Architecture principles. It promotes a scalable and maintainable structure for your NestJS projects.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Overview
 
-## Description
+The NestJS Clean Architecture Template is designed to help developers create robust and maintainable applications by following the principles of Clean Architecture. It separates the application into distinct layers, ensuring a clear separation of concerns and promoting modularity.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Folder Structure
 
-## Installation
+The template organizes the application code under the `src` directory using the following folder structure:
 
-```bash
-$ npm install
+```
+├── src
+│   ├── application
+│   │   └── sample
+│   ├── domains
+│   │   └── sample
+│   │       ├── entities
+│   │       └── services
+│   ├── infrastructure
+│   └── interface
+│       └── web
+└── test
 ```
 
-## Running the app
+- `application`: This folder contains the application layer of the Clean Architecture. It includes use cases and application-specific logic. In the example, there is a `sample` folder representing a sample application.
 
-```bash
-# development
-$ npm run start
+- `domains`: This folder represents the domain layer of the Clean Architecture. It contains the core business logic, entities, and services. The `sample` folder is an example of a domain within the application.
+  - `entities`: This folder contains the domain entities, which represent the core business objects and their behavior.
+  - `services`: This folder contains the domain services, which encapsulate the business logic and operations related to the domain.
 
-# watch mode
-$ npm run start:dev
+- `infrastructure`: This folder represents the infrastructure layer of the Clean Architecture. It includes the implementation details of external services, databases, and other infrastructure-related components.
 
-# production mode
-$ npm run start:prod
-```
+- `interface`: This folder contains the interface layer of the Clean Architecture. It includes the user interface, APIs, and other entry points to the application.
+  - `web`: This folder represents the web interface of the application, which can include controllers, resolvers, and other web-related components.
 
-## Test
+- `test`: This folder contains the unit tests and integration tests for the application.
 
-```bash
-# unit tests
-$ npm run test
+The folder structure follows the principles of Clean Architecture, where each layer has a specific responsibility and depends only on the layers below it. This promotes a clear separation of concerns and makes the application more modular and maintainable.
 
-# e2e tests
-$ npm run test:e2e
+## Prerequisites
 
-# test coverage
-$ npm run test:cov
-```
+Before getting started with the template, ensure that you have the following installed on your local machine:
 
-## Support
+- Docker: The template uses Docker to set up the development environment and run the application.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Building the Application
 
-## Stay in touch
+To build the application, follow these steps:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. Clone the repository to your local machine.
+2. Open a terminal and navigate to the project's root directory.
+3. Run the following command to build the Docker containers:
 
-## License
+   ```
+   docker compose build
+   ```
 
-Nest is [MIT licensed](LICENSE).
+   This command will build the NestJS application using the provided Dockerfile.
+
+## Running the Application
+
+Once the application is built, you can run it using Docker Compose:
+
+1. In the terminal, make sure you are in the project's root directory.
+2. Run the following command to start the application:
+
+   ```
+   docker compose up
+   ```
+
+   This command will start the NestJS application and its associated services defined in the `docker-compose.yml` file.
+
+   During the startup process, the application will also run any pending migrations to ensure that the database schema is up to date.
+
+3. Access the application by opening a web browser and navigating to `http://localhost:3000`.
+
+## Dockerfile
+
+The provided Dockerfile defines the steps to build the NestJS application container. It starts with a Node.js 20 Alpine base image, copies the application files, installs the dependencies, builds the application, and sets the command to run the application using the `node` command.
+
+## Docker Compose
+
+The `docker-compose.yml` file defines the services required for running the NestJS application. It includes two services:
+
+1. `nestjs`: The NestJS application service, which is built using the provided Dockerfile. It maps port 3000 from the container to the host machine, mounts the application directory as a volume, and sets the command to run the application in development mode using `npm run start:dev`. The service also loads environment variables from the `.env` file.
+
+2. `postgres`: The PostgreSQL database service, which uses the official PostgreSQL 16.2 image. It maps port 5432 from the container to the host machine, mounts a named volume for data persistence, and loads environment variables from the `.env` file.
+
+The `volumes` section defines a named volume `postgres-data` to persist the PostgreSQL data across container restarts.
+
+## Conclusion
+
+The NestJS Clean Architecture Template provides a solid foundation for building scalable and maintainable applications using NestJS and Clean Architecture principles. By following the provided build and run instructions, you can quickly set up and start developing your application with a clean and organized structure.
+
+Feel free to explore the template, customize it to your needs, and happy coding!
