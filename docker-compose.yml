@@ -21,4 +21,3 @@ services:
       - .env
 volumes:
   postgres-data:
-    external: true
