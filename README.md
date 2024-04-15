@@ -17,6 +17,7 @@ The template organizes the application code under the `src` directory using the 
 │   ├── domains
 │   │   └── sample
 │   │       ├── entities
+│   │       ├── repositories
 │   │       └── services
 │   ├── infrastructure
 │   └── interface
@@ -26,8 +27,9 @@ The template organizes the application code under the `src` directory using the 
 
 - `application`: This folder contains the application layer of the Clean Architecture. It includes use cases and application-specific logic. In the example, there is a `sample` folder representing a sample application.
 
-- `domains`: This folder represents the domain layer of the Clean Architecture. It contains the core business logic, entities, and services. The `sample` folder is an example of a domain within the application.
+- `domains`: This folder represents the domain layer of the Clean Architecture. It contains the core business logic, entities, repositories, and services. The `sample` folder is an example of a domain within the application.
   - `entities`: This folder contains the domain entities, which represent the core business objects and their behavior.
+  - `repositories`: This folder contains the repository interfaces and implementations. Repositories provide an abstraction layer between the domain and the data persistence layer, allowing for seamless interaction with the database or other data sources.
   - `services`: This folder contains the domain services, which encapsulate the business logic and operations related to the domain.
 
 - `infrastructure`: This folder represents the infrastructure layer of the Clean Architecture. It includes the implementation details of external services, databases, and other infrastructure-related components.
@@ -90,8 +92,9 @@ The `docker-compose.yml` file defines the services required for running the Nest
 
 The `volumes` section defines a named volume `postgres-data` to persist the PostgreSQL data across container restarts.
 
+
 ## Conclusion
 
 The NestJS Clean Architecture Template provides a solid foundation for building scalable and maintainable applications using NestJS and Clean Architecture principles. By following the provided build and run instructions, you can quickly set up and start developing your application with a clean and organized structure.
 
-Feel free to explore the template, customize it to your needs, and happy coding!
+Feel free to explore the template, customize it to your needs, and happy coding! 
