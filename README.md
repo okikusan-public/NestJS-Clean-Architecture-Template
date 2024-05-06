@@ -1,7 +1,3 @@
-# NestJS Clean Architecture Template
-
-This repository provides a template for building applications using NestJS and Clean Architecture principles. It promotes a scalable and maintainable structure for your NestJS projects.
-
 ## Overview
 
 The NestJS Clean Architecture Template is designed to help developers create robust and maintainable applications by following the principles of Clean Architecture. It separates the application into distinct layers, ensuring a clear separation of concerns and promoting modularity.
@@ -20,6 +16,7 @@ The template organizes the application code under the `src` directory using the 
 │   │       ├── repositories
 │   │       └── services
 │   ├── infrastructure
+│   │   ├── postgres
 │   └── interface
 │       └── web
 └── test
@@ -29,10 +26,10 @@ The template organizes the application code under the `src` directory using the 
 
 - `domains`: This folder represents the domain layer of the Clean Architecture. It contains the core business logic, entities, repositories, and services. The `sample` folder is an example of a domain within the application.
   - `entities`: This folder contains the domain entities, which represent the core business objects and their behavior.
-  - `repositories`: This folder contains the repository interfaces and implementations. Repositories provide an abstraction layer between the domain and the data persistence layer, allowing for seamless interaction with the database or other data sources.
+  - `repositories`: This folder contains the repository interfaces. Repositories provide an abstraction layer between the domain and the data persistence layer, defining the contract for interacting with the database or other data sources.
   - `services`: This folder contains the domain services, which encapsulate the business logic and operations related to the domain.
 
-- `infrastructure`: This folder represents the infrastructure layer of the Clean Architecture. It includes the implementation details of external services, databases, and other infrastructure-related components.
+- `infrastructure`: This folder represents the infrastructure layer of the Clean Architecture. It includes the implementation details of external services, databases, and other infrastructure-related components. The repository implementations, which depend on specific technologies like databases or ORMs, are also placed in this layer.
 
 - `interface`: This folder contains the interface layer of the Clean Architecture. It includes the user interface, APIs, and other entry points to the application.
   - `web`: This folder represents the web interface of the application, which can include controllers, resolvers, and other web-related components.
@@ -97,4 +94,4 @@ The `volumes` section defines a named volume `postgres-data` to persist the Post
 
 The NestJS Clean Architecture Template provides a solid foundation for building scalable and maintainable applications using NestJS and Clean Architecture principles. By following the provided build and run instructions, you can quickly set up and start developing your application with a clean and organized structure.
 
-Feel free to explore the template, customize it to your needs, and happy coding! 
+Feel free to explore the template, customize it to your needs, and happy coding!
