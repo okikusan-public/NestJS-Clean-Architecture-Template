@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { SampleService } from './services/sample.service';
-import { SampleEntity } from './entities/sample.entity';
-import { SampleRepository } from './repositories/sample.repository';
+import { SampleInflaImplModule } from '../../infrastructure/postgres/sample.impl.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SampleEntity])],
-  providers: [SampleService, SampleRepository],
+  imports: [SampleInflaImplModule],
+  providers: [SampleService],
   exports: [SampleService],
 })
 export class SampleDomainModule {}

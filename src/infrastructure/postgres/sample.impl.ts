@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SampleEntity } from '../entities/sample.entity';
+import { SampleEntity } from '../../domains/sample/entities/sample.entity';
+import { ISampleRepository } from '../../domains/sample/repositories/sample.repository.interface';
 
 @Injectable()
-export class SampleRepository {
+export class SampleRepositoryImpl implements ISampleRepository {
     constructor(
         @InjectRepository(SampleEntity)
         private readonly repository: Repository<SampleEntity>,
