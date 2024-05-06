@@ -1,3 +1,8 @@
+# NestJS Clean Architecture Template
+
+This repository provides a template for building applications using NestJS and Clean Architecture principles. It promotes a scalable and maintainable structure for your NestJS projects.
+
+
 ## Overview
 
 The NestJS Clean Architecture Template is designed to help developers create robust and maintainable applications by following the principles of Clean Architecture. It separates the application into distinct layers, ensuring a clear separation of concerns and promoting modularity.
