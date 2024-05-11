@@ -1,11 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { SampleService } from '../../domains/sample/services/sample.service';
+import { Inject, Injectable } from '@nestjs/common';
+import { SampleEntity } from '../../domains/sample/entities/sample.entity';
+import { ISampleService, SAMPLE_SERVICE_TOKEN } from '../interfaces/sample.service.interface';
 
 @Injectable()
 export class SampleUseCase {
-  constructor(private readonly sampleService: SampleService) {}
+  constructor(
+    @Inject(SAMPLE_SERVICE_TOKEN)
+    private readonly sampleService: ISampleService,
+  ) {}
 
-  async execute(): Promise<void> {
-    const samples = await this.sampleService.getSampleEntities();
+  async execute(): Promise<SampleEntity[]> {
+    return this.sampleService.getSampleEntities();
   }
 }
