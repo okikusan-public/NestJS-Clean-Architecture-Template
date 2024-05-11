@@ -22,7 +22,7 @@ The template organizes the application code under the `src` directory using the 
 │   │       └── services
 │   ├── infrastructure
 │   │   ├── postgres
-│   └── interface
+│   └── interfaces
 │       └── web
 └── test
 ```
@@ -36,7 +36,7 @@ The template organizes the application code under the `src` directory using the 
 
 - `infrastructure`: This folder represents the infrastructure layer of the Clean Architecture. It includes the implementation details of external services, databases, and other infrastructure-related components. The repository implementations, which depend on specific technologies like databases or ORMs, are also placed in this layer.
 
-- `interface`: This folder contains the interface layer of the Clean Architecture. It includes the user interface, APIs, and other entry points to the application.
+- `interfaces`: This folder contains the interface layer of the Clean Architecture. It includes the user interface, APIs, and other entry points to the application.
   - `web`: This folder represents the web interface of the application, which can include controllers, resolvers, and other web-related components.
 
 - `test`: This folder contains the unit tests and integration tests for the application.
