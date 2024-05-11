@@ -1,5 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ISampleUseCase, SAMPLE_USECASE_TOKEN } from './sample.usecase.interface';
+import { ISampleUseCase, SAMPLE_USECASE_TOKEN } from './interfaces/sample.usecase.interface';
 
 @Controller('samples')
 export class SampleController {

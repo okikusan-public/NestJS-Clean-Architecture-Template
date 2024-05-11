@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import ormconfig from '../ormconfig';
-import { SampleWebModule } from './interface/web/sample_control.module';
+import { SampleWebModule } from './interfaces/web/sample_control.module';
 
 @Module({
   imports: [
