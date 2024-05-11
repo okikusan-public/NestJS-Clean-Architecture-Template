@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { SampleService } from '../../domains/sample/services/sample.service';
-import { SAMPLE_SERVICE_TOKEN } from '../../application/interfaces/sample.service.interface';
-import { SampleInflaImplModule } from '../../infrastructure/postgres/sample.impl.module';
+import { SampleUseCase } from './sample_usecase';
+import { SampleDomainModule } from '../../domains/sample/sample_domain.module';
+import { SAMPLE_USECASE_TOKEN } from '../../interface/web/sample.usecase.interface';
 
 @Module({
-  imports: [SampleInflaImplModule],
+  imports: [SampleDomainModule],
   providers: [
     {
-      provide: SAMPLE_SERVICE_TOKEN,
-      useClass: SampleService,
+      provide: SAMPLE_USECASE_TOKEN,
+      useClass: SampleUseCase,
     },
   ],
-  exports: [SAMPLE_SERVICE_TOKEN],
+  exports: [SAMPLE_USECASE_TOKEN],
 })
-export class SampleDomainModule {}
+export class SampleModule {}

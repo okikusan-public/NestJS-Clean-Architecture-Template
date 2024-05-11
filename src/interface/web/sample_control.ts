@@ -1,9 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
-import { SampleUseCase } from '../../application/sample/sample_usecase';
+import { Controller, Get, Inject } from '@nestjs/common';
+import { ISampleUseCase, SAMPLE_USECASE_TOKEN } from './sample.usecase.interface';
 
 @Controller('samples')
 export class SampleController {
-  constructor(private readonly sampleUseCase: SampleUseCase) {}
+  constructor(
+    @Inject(SAMPLE_USECASE_TOKEN)
+    private readonly sampleUseCase: ISampleUseCase,
+  ) {}
 
   @Get()
   async getSamples(): Promise<any> {
