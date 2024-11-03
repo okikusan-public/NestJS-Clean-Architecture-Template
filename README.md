@@ -104,6 +104,28 @@ To generate a new migration, ensure the NestJS Docker container is running, then
 docker exec -it <nestjs container_id> npx typeorm-ts-node-commonjs migration:generate ./src/migrations/<migration filename> -d data-source.ts
 ```
 
+## Environment Variables
+
+The application requires the following environment variables to be set. You can use the `.env_sample` file as a reference to create your own `.env` file.
+
+- `DB_HOST`: The hostname of the database server.
+- `DB_PORT`: The port number on which the database server is listening.
+- `DB_USER`: The username for the database connection.
+- `DB_PASSWORD`: The password for the database connection.
+- `DB_NAME`: The name of the database.
+- `DB_SYNCRONIZE`: A boolean value to synchronize the database schema.
+
+### Local Environment Variables (Docker)
+
+The following variables are used only in the local environment when using Docker to run PostgreSQL:
+
+- `POSTGRES_USER`: The PostgreSQL user.
+- `POSTGRES_PASSWORD`: The PostgreSQL password.
+- `POSTGRES_DB`: The PostgreSQL database name.
+
+Ensure that you have a `.env` file in the root directory of your project with the appropriate values for these variables.
+
+
 ## Conclusion
 
 The NestJS Clean Architecture Template provides a solid foundation for building scalable and maintainable applications using NestJS and Clean Architecture principles. By following the provided build and run instructions, you can quickly set up and start developing your application with a clean and organized structure.
