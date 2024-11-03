@@ -10,5 +10,3 @@ export const AppDataSource = new DataSource({
   entities: ['src/domains/**/*.entity.ts'],
   logging: true,
 });
-
-// docker exec -it <container_id> npx typeorm-ts-node-commonjs migration:generate ./src/migrations/<migration filename> -d data-source.ts
