@@ -5,13 +5,13 @@ import { SAMPLE_REPOSITORY_TOKEN } from '../../domains/sample/repositories/sampl
 import { SampleRepositoryImpl } from './sample.impl';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([SampleEntity])],
-    providers: [
-        {
-            provide: SAMPLE_REPOSITORY_TOKEN,
-            useClass: SampleRepositoryImpl,
-        },
-    ],
-    exports: [SAMPLE_REPOSITORY_TOKEN],
+  imports: [TypeOrmModule.forFeature([SampleEntity])],
+  providers: [
+    {
+      provide: SAMPLE_REPOSITORY_TOKEN,
+      useClass: SampleRepositoryImpl,
+    },
+  ],
+  exports: [SAMPLE_REPOSITORY_TOKEN],
 })
 export class SampleInflaImplModule {}

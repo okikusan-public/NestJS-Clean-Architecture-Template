@@ -1,7 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SampleEntity } from '../../domains/sample/entities/sample.entity';
-import { ISampleService, SAMPLE_SERVICE_TOKEN } from '../interfaces/sample.service.interface';
+import {
+  ISampleService,
+  SAMPLE_SERVICE_TOKEN,
+} from '../interfaces/sample.service.interface';
 import { ISampleUseCase } from '../../interfaces/web/interfaces/sample.usecase.interface';
+import { CreateSampleDto } from '../../domains/sample/dto/create-sample.dto';
+import { SampleResponseDto } from '../../domains/sample/dto/sample-response.dto';
 
 @Injectable()
 export class SampleUseCase implements ISampleUseCase {
@@ -10,7 +14,26 @@ export class SampleUseCase implements ISampleUseCase {
     private readonly sampleService: ISampleService,
   ) {}
 
-  async execute(): Promise<SampleEntity[]> {
+  async getAll(): Promise<SampleResponseDto[]> {
     return this.sampleService.getSampleEntities();
+  }
+
+  async getById(id: number): Promise<SampleResponseDto> {
+    return this.sampleService.getSampleById(id);
+  }
+
+  async create(dto: CreateSampleDto): Promise<SampleResponseDto> {
+    return this.sampleService.createSample(dto);
+  }
+
+  async update(
+    id: number,
+    dto: Partial<CreateSampleDto>,
+  ): Promise<SampleResponseDto> {
+    return this.sampleService.updateSample(id, dto);
+  }
+
+  async delete(id: number): Promise<void> {
+    return this.sampleService.deleteSample(id);
   }
 }

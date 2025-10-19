@@ -5,10 +5,7 @@ import ormconfig from '../ormconfig';
 import { SampleWebModule } from './interfaces/web/sample_control.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(ormconfig),
-    SampleWebModule,
-  ],
+  imports: [TypeOrmModule.forRoot(ormconfig), SampleWebModule],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
