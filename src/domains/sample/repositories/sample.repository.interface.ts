@@ -1,5 +1,5 @@
 import { SampleEntity } from '../entities/sample.entity';
-import { CreateSampleDto } from '../dto/create-sample.dto';
+import { CreateSampleDto } from '../../../interfaces/web/dto/create-sample.dto';
 
 export const SAMPLE_REPOSITORY_TOKEN = Symbol('ISampleRepository');
 

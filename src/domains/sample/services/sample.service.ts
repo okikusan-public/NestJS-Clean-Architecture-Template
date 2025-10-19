@@ -3,8 +3,8 @@ import {
   ISampleRepository,
   SAMPLE_REPOSITORY_TOKEN,
 } from '../repositories/sample.repository.interface';
-import { ISampleService } from '../../../application/interfaces/sample.service.interface';
-import { CreateSampleDto } from '../dto/create-sample.dto';
+import { ISampleService } from '../interfaces/sample.service.interface';
+import { CreateSampleDto } from '../../../interfaces/web/dto/create-sample.dto';
 import { SampleResponseDto } from '../dto/sample-response.dto';
 import { SampleNotFoundException } from '../exceptions/sample-not-found.exception';
 

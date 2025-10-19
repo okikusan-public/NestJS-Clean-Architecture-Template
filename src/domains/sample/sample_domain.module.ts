@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SampleService } from './services/sample.service';
-import { SAMPLE_SERVICE_TOKEN } from '../../application/interfaces/sample.service.interface';
+import { SAMPLE_SERVICE_TOKEN } from './interfaces/sample.service.interface';
 import { SampleInflaImplModule } from '../../infrastructure/postgres/sample.impl.module';
 
 @Module({

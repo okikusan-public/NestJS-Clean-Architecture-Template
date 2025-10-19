@@ -1,7 +1,9 @@
-import { NotFoundException } from '@nestjs/common';
-
-export class SampleNotFoundException extends NotFoundException {
-  constructor(id: number) {
-    super(`Sample with ID ${id} not found`);
+export class SampleNotFoundException extends Error {
+  constructor(
+    public readonly id: number,
+    message?: string,
+  ) {
+    super(message || `Sample with ID ${id} not found`);
+    this.name = 'SampleNotFoundException';
   }
 }

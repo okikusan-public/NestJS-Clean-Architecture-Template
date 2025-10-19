@@ -4,7 +4,7 @@ import {
   SAMPLE_SERVICE_TOKEN,
 } from '../interfaces/sample.service.interface';
 import { ISampleUseCase } from '../../interfaces/web/interfaces/sample.usecase.interface';
-import { CreateSampleDto } from '../../domains/sample/dto/create-sample.dto';
+import { CreateSampleDto } from '../../interfaces/web/dto/create-sample.dto';
 import { SampleResponseDto } from '../../domains/sample/dto/sample-response.dto';
 
 @Injectable()

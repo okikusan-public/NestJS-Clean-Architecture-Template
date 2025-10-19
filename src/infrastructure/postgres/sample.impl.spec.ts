@@ -2,7 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { SampleRepositoryImpl } from './sample.impl';
 import { SampleEntity } from '../../domains/sample/entities/sample.entity';
-import { CreateSampleDto } from '../../domains/sample/dto/create-sample.dto';
+import { SampleOrmEntity } from './entities/sample.orm-entity';
+import { CreateSampleDto } from '../../interfaces/web/dto/create-sample.dto';
 
 describe('SampleRepositoryImpl', () => {
   let repository: SampleRepositoryImpl;
@@ -20,7 +21,7 @@ describe('SampleRepositoryImpl', () => {
       providers: [
         SampleRepositoryImpl,
         {
-          provide: getRepositoryToken(SampleEntity),
+          provide: getRepositoryToken(SampleOrmEntity),
           useValue: mockTypeormRepository,
         },
       ],
@@ -35,15 +36,18 @@ describe('SampleRepositoryImpl', () => {
 
   describe('findAll', () => {
     it('should return an array of sample entities', async () => {
-      const mockEntities: SampleEntity[] = [
+      const mockOrmEntities = [
         { id: 1, name: 'Test 1', description: 'Description 1' },
         { id: 2, name: 'Test 2', description: 'Description 2' },
       ];
-      mockTypeormRepository.find.mockResolvedValue(mockEntities);
+      const expectedDomainEntities = mockOrmEntities.map(
+        (e) => new SampleEntity(e.id, e.name, e.description),
+      );
+      mockTypeormRepository.find.mockResolvedValue(mockOrmEntities);
 
       const result = await repository.findAll();
 
-      expect(result).toEqual(mockEntities);
+      expect(result).toEqual(expectedDomainEntities);
       expect(mockTypeormRepository.find).toHaveBeenCalledTimes(1);
     });
 
@@ -59,16 +63,21 @@ describe('SampleRepositoryImpl', () => {
 
   describe('findById', () => {
     it('should return a sample entity when found', async () => {
-      const mockEntity: SampleEntity = {
+      const mockOrmEntity = {
         id: 1,
         name: 'Test',
         description: 'Description',
       };
-      mockTypeormRepository.findOne.mockResolvedValue(mockEntity);
+      const expectedDomainEntity = new SampleEntity(
+        mockOrmEntity.id,
+        mockOrmEntity.name,
+        mockOrmEntity.description,
+      );
+      mockTypeormRepository.findOne.mockResolvedValue(mockOrmEntity);
 
       const result = await repository.findById(1);
 
-      expect(result).toEqual(mockEntity);
+      expect(result).toEqual(expectedDomainEntity);
       expect(mockTypeormRepository.findOne).toHaveBeenCalledWith({
         where: { id: 1 },
       });
@@ -92,39 +101,49 @@ describe('SampleRepositoryImpl', () => {
         name: 'New Sample',
         description: 'New Description',
       };
-      const mockEntity: SampleEntity = { id: 1, ...dto };
+      const mockOrmEntity = { id: 1, ...dto };
+      const expectedDomainEntity = new SampleEntity(
+        1,
+        dto.name,
+        dto.description,
+      );
 
-      mockTypeormRepository.create.mockReturnValue(mockEntity);
-      mockTypeormRepository.save.mockResolvedValue(mockEntity);
+      mockTypeormRepository.create.mockReturnValue(mockOrmEntity);
+      mockTypeormRepository.save.mockResolvedValue(mockOrmEntity);
 
       const result = await repository.create(dto);
 
-      expect(result).toEqual(mockEntity);
+      expect(result).toEqual(expectedDomainEntity);
       expect(mockTypeormRepository.create).toHaveBeenCalledWith(dto);
-      expect(mockTypeormRepository.save).toHaveBeenCalledWith(mockEntity);
+      expect(mockTypeormRepository.save).toHaveBeenCalledWith(mockOrmEntity);
     });
   });
 
   describe('update', () => {
     it('should update and return the entity when found', async () => {
-      const existingEntity: SampleEntity = {
+      const existingOrmEntity = {
         id: 1,
         name: 'Old Name',
         description: 'Old Description',
       };
       const updateDto: Partial<CreateSampleDto> = { name: 'Updated Name' };
-      const updatedEntity: SampleEntity = { ...existingEntity, ...updateDto };
+      const updatedOrmEntity = { ...existingOrmEntity, ...updateDto };
+      const expectedDomainEntity = new SampleEntity(
+        updatedOrmEntity.id,
+        updatedOrmEntity.name,
+        updatedOrmEntity.description,
+      );
 
-      mockTypeormRepository.findOne.mockResolvedValue(existingEntity);
-      mockTypeormRepository.save.mockResolvedValue(updatedEntity);
+      mockTypeormRepository.findOne.mockResolvedValue(existingOrmEntity);
+      mockTypeormRepository.save.mockResolvedValue(updatedOrmEntity);
 
       const result = await repository.update(1, updateDto);
 
-      expect(result).toEqual(updatedEntity);
+      expect(result).toEqual(expectedDomainEntity);
       expect(mockTypeormRepository.findOne).toHaveBeenCalledWith({
         where: { id: 1 },
       });
-      expect(mockTypeormRepository.save).toHaveBeenCalledWith(updatedEntity);
+      expect(mockTypeormRepository.save).toHaveBeenCalledWith(updatedOrmEntity);
     });
 
     it('should return null when entity not found', async () => {
