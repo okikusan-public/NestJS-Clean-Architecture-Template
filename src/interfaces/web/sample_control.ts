@@ -10,15 +10,18 @@ import {
   ParseIntPipe,
   HttpCode,
   HttpStatus,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ISampleUseCase,
   SAMPLE_USECASE_TOKEN,
 } from './interfaces/sample.usecase.interface';
-import { CreateSampleDto } from '../../domains/sample/dto/create-sample.dto';
+import { CreateSampleDto } from './dto/create-sample.dto';
 import { SampleResponseDto } from '../../domains/sample/dto/sample-response.dto';
+import { DomainExceptionFilter } from './filters/domain-exception.filter';
 
 @Controller('samples')
+@UseFilters(DomainExceptionFilter)
 export class SampleController {
   constructor(
     @Inject(SAMPLE_USECASE_TOKEN)

@@ -5,7 +5,7 @@ import {
   SAMPLE_REPOSITORY_TOKEN,
 } from '../repositories/sample.repository.interface';
 import { SampleEntity } from '../entities/sample.entity';
-import { CreateSampleDto } from '../dto/create-sample.dto';
+import { CreateSampleDto } from '../../../interfaces/web/dto/create-sample.dto';
 import { SampleNotFoundException } from '../exceptions/sample-not-found.exception';
 
 describe('SampleService', () => {
@@ -40,8 +40,8 @@ describe('SampleService', () => {
   describe('getSampleEntities', () => {
     it('should return an array of sample response DTOs', async () => {
       const mockEntities: SampleEntity[] = [
-        { id: 1, name: 'Test 1', description: 'Description 1' },
-        { id: 2, name: 'Test 2', description: 'Description 2' },
+        new SampleEntity(1, 'Test 1', 'Description 1'),
+        new SampleEntity(2, 'Test 2', 'Description 2'),
       ];
       (mockRepository.findAll as jest.Mock).mockResolvedValue(mockEntities);
 
@@ -73,11 +73,7 @@ describe('SampleService', () => {
 
   describe('getSampleById', () => {
     it('should return a sample response DTO when entity is found', async () => {
-      const mockEntity: SampleEntity = {
-        id: 1,
-        name: 'Test',
-        description: 'Description',
-      };
+      const mockEntity = new SampleEntity(1, 'Test', 'Description');
       (mockRepository.findById as jest.Mock).mockResolvedValue(mockEntity);
 
       const result = await service.getSampleById(1);
@@ -106,7 +102,7 @@ describe('SampleService', () => {
         name: 'New Sample',
         description: 'New Description',
       };
-      const mockEntity: SampleEntity = { id: 1, ...dto };
+      const mockEntity = new SampleEntity(1, dto.name, dto.description);
       (mockRepository.create as jest.Mock).mockResolvedValue(mockEntity);
 
       const result = await service.createSample(dto);
@@ -123,11 +119,7 @@ describe('SampleService', () => {
   describe('updateSample', () => {
     it('should update and return a sample response DTO when entity is found', async () => {
       const updateDto: Partial<CreateSampleDto> = { name: 'Updated Name' };
-      const mockEntity: SampleEntity = {
-        id: 1,
-        name: 'Updated Name',
-        description: 'Description',
-      };
+      const mockEntity = new SampleEntity(1, 'Updated Name', 'Description');
       (mockRepository.update as jest.Mock).mockResolvedValue(mockEntity);
 
       const result = await service.updateSample(1, updateDto);

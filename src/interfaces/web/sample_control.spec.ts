@@ -4,7 +4,7 @@ import {
   ISampleUseCase,
   SAMPLE_USECASE_TOKEN,
 } from './interfaces/sample.usecase.interface';
-import { CreateSampleDto } from '../../domains/sample/dto/create-sample.dto';
+import { CreateSampleDto } from './dto/create-sample.dto';
 import { SampleResponseDto } from '../../domains/sample/dto/sample-response.dto';
 
 describe('SampleController', () => {

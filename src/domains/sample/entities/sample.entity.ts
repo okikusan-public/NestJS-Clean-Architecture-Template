@@ -1,15 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
-@Entity()
 export class SampleEntity {
-  @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
   name: string;
-
-  @Column()
   description: string;
 
-  // Add more columns and relationships as needed
+  constructor(id: number, name: string, description: string) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
 }

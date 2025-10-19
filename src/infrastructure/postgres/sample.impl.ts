@@ -2,39 +2,45 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SampleEntity } from '../../domains/sample/entities/sample.entity';
+import { SampleOrmEntity } from './entities/sample.orm-entity';
+import { SampleMapper } from './mappers/sample.mapper';
 import { ISampleRepository } from '../../domains/sample/repositories/sample.repository.interface';
-import { CreateSampleDto } from '../../domains/sample/dto/create-sample.dto';
+import { CreateSampleDto } from '../../interfaces/web/dto/create-sample.dto';
 
 @Injectable()
 export class SampleRepositoryImpl implements ISampleRepository {
   constructor(
-    @InjectRepository(SampleEntity)
-    private readonly repository: Repository<SampleEntity>,
+    @InjectRepository(SampleOrmEntity)
+    private readonly repository: Repository<SampleOrmEntity>,
   ) {}
 
   async findAll(): Promise<SampleEntity[]> {
-    return this.repository.find();
+    const ormEntities = await this.repository.find();
+    return ormEntities.map(SampleMapper.toDomain);
   }
 
   async findById(id: number): Promise<SampleEntity | null> {
-    return this.repository.findOne({ where: { id } });
+    const ormEntity = await this.repository.findOne({ where: { id } });
+    return ormEntity ? SampleMapper.toDomain(ormEntity) : null;
   }
 
   async create(dto: CreateSampleDto): Promise<SampleEntity> {
-    const entity = this.repository.create(dto);
-    return this.repository.save(entity);
+    const ormEntity = this.repository.create(dto);
+    const savedOrmEntity = await this.repository.save(ormEntity);
+    return SampleMapper.toDomain(savedOrmEntity);
   }
 
   async update(
     id: number,
     dto: Partial<CreateSampleDto>,
   ): Promise<SampleEntity | null> {
-    const entity = await this.findById(id);
-    if (!entity) {
+    const ormEntity = await this.repository.findOne({ where: { id } });
+    if (!ormEntity) {
       return null;
     }
-    Object.assign(entity, dto);
-    return this.repository.save(entity);
+    Object.assign(ormEntity, dto);
+    const savedOrmEntity = await this.repository.save(ormEntity);
+    return SampleMapper.toDomain(savedOrmEntity);
   }
 
   async delete(id: number): Promise<boolean> {
