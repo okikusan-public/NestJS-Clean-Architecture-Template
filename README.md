@@ -85,7 +85,7 @@ Once the application is built, you can run it using Docker Compose:
 
 ## Dockerfile
 
-The provided Dockerfile defines the steps to build the NestJS application container. It starts with a Node.js 20 Alpine base image, copies the application files, installs the dependencies, builds the application, and sets the command to run the application using the `node` command.
+The provided Dockerfile defines the steps to build the NestJS application container. It starts with a Node.js 22.20.0 (LTS) Alpine base image, copies the application files, installs the dependencies, builds the application, and sets the command to run the application using the `node` command.
 
 ## Docker Compose
 
