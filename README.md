@@ -87,13 +87,21 @@ Once the application is built, you can run it using Docker Compose:
 
 If you would rather run the API directly on your machine, follow these steps:
 
-1. Install the project dependencies:
+1. Create a `.env` file by copying `.env_sample` and updating the database credentials to point to a running PostgreSQL instance. You can reuse the containerized database by running only that service: `docker compose up postgres`.
+
+2. Install the project dependencies:
 
    ```
    npm install
    ```
 
-2. Start the development server:
+3. Apply the latest database migrations so the schema matches the entities:
+
+   ```
+   npm run migration:run
+   ```
+
+4. Start the development server:
 
    ```
    npm run start:dev
@@ -101,7 +109,7 @@ If you would rather run the API directly on your machine, follow these steps:
 
    This command launches the NestJS application with hot-reload enabled. The API becomes available at `http://localhost:3000`.
 
-3. Stop the development server with `Ctrl+C` when you are done.
+5. Stop the development server with `Ctrl+C` when you are done.
 
 ### Running Tests
 
@@ -119,7 +127,7 @@ Execute the project's automated tests with the following commands:
   npm run test:e2e
   ```
 
-Both commands rely on the same configuration used by the Docker setup, so you can run them whether the application is started locally or inside containers.
+Running the E2E tests requires access to a PostgreSQL database, so make sure the database described in your `.env` file is available before executing the command.
 
 ## Dockerfile
 
