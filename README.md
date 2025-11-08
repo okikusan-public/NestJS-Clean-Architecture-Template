@@ -83,6 +83,44 @@ Once the application is built, you can run it using Docker Compose:
 
 3. Access the application by opening a web browser and navigating to `http://localhost:3000`.
 
+### Running the Application Locally (without Docker)
+
+If you would rather run the API directly on your machine, follow these steps:
+
+1. Install the project dependencies:
+
+   ```
+   npm install
+   ```
+
+2. Start the development server:
+
+   ```
+   npm run start:dev
+   ```
+
+   This command launches the NestJS application with hot-reload enabled. The API becomes available at `http://localhost:3000`.
+
+3. Stop the development server with `Ctrl+C` when you are done.
+
+### Running Tests
+
+Execute the project's automated tests with the following commands:
+
+- Unit tests:
+
+  ```
+  npm run test
+  ```
+
+- End-to-end tests:
+
+  ```
+  npm run test:e2e
+  ```
+
+Both commands rely on the same configuration used by the Docker setup, so you can run them whether the application is started locally or inside containers.
+
 ## Dockerfile
 
 The provided Dockerfile defines the steps to build the NestJS application container. It starts with a Node.js 22.20.0 (LTS) Alpine base image, copies the application files, installs the dependencies, builds the application, and sets the command to run the application using the `node` command.
