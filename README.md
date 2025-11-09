@@ -127,7 +127,7 @@ Execute the project's automated tests with the following commands:
   npm run test:e2e
   ```
 
-Running the E2E tests requires access to a PostgreSQL database, so make sure the database described in your `.env` file is available before executing the command.
+The Jest runner automatically sets `NODE_ENV=test`, which instructs the application to spin up an ephemeral in-memory SQLite database. As a result, you no longer need a PostgreSQL instance to execute the end-to-end test suite.
 
 ## Dockerfile
 
