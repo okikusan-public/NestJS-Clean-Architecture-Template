@@ -1,121 +1,121 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { SampleEntity } from '../src/domains/sample/entities/sample.entity';
+import { AppModule } from './../src/app.module';
+import { SampleOrmEntity } from '../src/infrastructure/postgres/entities/sample.orm-entity';
 
 describe('SampleController (e2e)', () => {
   let app: INestApplication;
-
-  const mockRepository = {
-    find: jest.fn(),
-    findOne: jest.fn(),
-    create: jest.fn(),
-    save: jest.fn(),
-    delete: jest.fn(),
-  };
+  let repository: Repository<SampleOrmEntity>;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    })
-      .overrideProvider(getRepositoryToken(SampleEntity))
-      .useValue(mockRepository)
-      .compile();
+    }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    repository = moduleFixture.get<Repository<SampleOrmEntity>>(
+      getRepositoryToken(SampleOrmEntity),
+    );
   });
 
   afterEach(async () => {
     await app.close();
-    jest.clearAllMocks();
   });
 
   describe('/samples (GET)', () => {
-    it('should return an array of samples', () => {
-      const mockSamples = [
-        { id: 1, name: 'Test 1', description: 'Description 1' },
-        { id: 2, name: 'Test 2', description: 'Description 2' },
-      ];
-      mockRepository.find.mockResolvedValue(mockSamples);
+    it('should return an array of samples', async () => {
+      await repository.clear();
+      await repository.save([
+        repository.create({
+          name: 'Test 1',
+          description: 'Description 1',
+        }),
+        repository.create({
+          name: 'Test 2',
+          description: 'Description 2',
+        }),
+      ]);
 
-      return request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .get('/samples')
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.data).toHaveLength(2);
-          expect(res.body.data[0].name).toBe('Test 1');
-        });
+        .expect(200);
+
+      expect(response.body.data).toHaveLength(2);
+      expect(response.body.data[0]).toMatchObject({
+        name: 'Test 1',
+        description: 'Description 1',
+      });
     });
   });
 
   describe('/samples/:id (GET)', () => {
-    it('should return a single sample', () => {
-      const mockSample = { id: 1, name: 'Test', description: 'Description' };
-      mockRepository.findOne.mockResolvedValue(mockSample);
+    it('should return a single sample', async () => {
+      const saved = await repository.save(
+        repository.create({
+          name: 'Test',
+          description: 'Description',
+        }),
+      );
 
-      return request(app.getHttpServer())
-        .get('/samples/1')
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.data.id).toBe(1);
-          expect(res.body.data.name).toBe('Test');
-        });
+      const response = await request(app.getHttpServer())
+        .get(`/samples/${saved.id}`)
+        .expect(200);
+
+      expect(response.body.data).toMatchObject({
+        id: saved.id,
+        name: 'Test',
+        description: 'Description',
+      });
     });
 
     it('should return 404 when sample not found', () => {
-      mockRepository.findOne.mockResolvedValue(null);
-
       return request(app.getHttpServer()).get('/samples/999').expect(404);
     });
   });
 
   describe('/samples (POST)', () => {
-    it('should create a new sample', () => {
+    it('should create a new sample', async () => {
       const newSample = { name: 'New Sample', description: 'New Description' };
-      const createdSample = { id: 1, ...newSample };
 
-      mockRepository.create.mockReturnValue(createdSample);
-      mockRepository.save.mockResolvedValue(createdSample);
-
-      return request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/samples')
         .send(newSample)
-        .expect(201)
-        .expect((res) => {
-          expect(res.body.data.name).toBe('New Sample');
-          expect(res.body.data.description).toBe('New Description');
-        });
+        .expect(201);
+
+      expect(response.body.data).toMatchObject(newSample);
+      const created = await repository.findOne({
+        where: { id: response.body.data.id },
+      });
+      expect(created).toBeDefined();
     });
   });
 
   describe('/samples/:id (PUT)', () => {
-    it('should update an existing sample', () => {
-      const existingSample = {
-        id: 1,
-        name: 'Old Name',
-        description: 'Old Description',
-      };
-      const updateData = { name: 'Updated Name' };
-      const updatedSample = { ...existingSample, ...updateData };
+    it('should update an existing sample', async () => {
+      const saved = await repository.save(
+        repository.create({
+          name: 'Old Name',
+          description: 'Old Description',
+        }),
+      );
 
-      mockRepository.findOne.mockResolvedValue(existingSample);
-      mockRepository.save.mockResolvedValue(updatedSample);
+      const response = await request(app.getHttpServer())
+        .put(`/samples/${saved.id}`)
+        .send({ name: 'Updated Name' })
+        .expect(200);
 
-      return request(app.getHttpServer())
-        .put('/samples/1')
-        .send(updateData)
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.data.name).toBe('Updated Name');
-        });
+      expect(response.body.data).toMatchObject({
+        id: saved.id,
+        name: 'Updated Name',
+      });
     });
 
     it('should return 404 when updating non-existent sample', () => {
-      mockRepository.findOne.mockResolvedValue(null);
-
       return request(app.getHttpServer())
         .put('/samples/999')
         .send({ name: 'Updated' })
@@ -124,15 +124,23 @@ describe('SampleController (e2e)', () => {
   });
 
   describe('/samples/:id (DELETE)', () => {
-    it('should delete a sample', () => {
-      mockRepository.delete.mockResolvedValue({ affected: 1, raw: {} });
+    it('should delete a sample', async () => {
+      const saved = await repository.save(
+        repository.create({
+          name: 'Delete Me',
+          description: 'Delete Description',
+        }),
+      );
 
-      return request(app.getHttpServer()).delete('/samples/1').expect(204);
+      await request(app.getHttpServer())
+        .delete(`/samples/${saved.id}`)
+        .expect(204);
+
+      const found = await repository.findOne({ where: { id: saved.id } });
+      expect(found).toBeNull();
     });
 
     it('should return 404 when deleting non-existent sample', () => {
-      mockRepository.delete.mockResolvedValue({ affected: 0, raw: {} });
-
       return request(app.getHttpServer()).delete('/samples/999').expect(404);
     });
   });
