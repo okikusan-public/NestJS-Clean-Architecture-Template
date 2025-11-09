@@ -129,6 +129,8 @@ Execute the project's automated tests with the following commands:
 
 The Jest runner automatically sets `NODE_ENV=test`, which instructs the application to spin up an ephemeral in-memory SQLite database. As a result, you no longer need a PostgreSQL instance to execute the end-to-end test suite.
 
+> **Note:** The SQLite driver is installed as a development dependency. Make sure you run `npm install` (without omitting dev dependencies) before executing the E2E suite so that the native bindings are available.
+
 ## Dockerfile
 
 The provided Dockerfile defines the steps to build the NestJS application container. It starts with a Node.js 22.20.0 (LTS) Alpine base image, copies the application files, installs the dependencies, builds the application, and sets the command to run the application using the `node` command.

@@ -3,19 +3,26 @@ import { join } from 'path';
 
 const isTestEnv = process.env.NODE_ENV === 'test';
 
+const entitiesGlob = join(
+  __dirname,
+  'src',
+  '**',
+  '*.{entity,orm-entity}.{ts,js}',
+);
+
+const migrationsGlob = join(
+  __dirname,
+  'src',
+  'migrations',
+  '*.{ts,js}',
+);
+
 const config: TypeOrmModuleOptions = isTestEnv
   ? {
       type: 'sqlite',
       database: ':memory:',
       dropSchema: true,
-      entities: [
-        join(
-          __dirname,
-          'src',
-          '**',
-          '*.{entity,orm-entity}.{ts,js}',
-        ),
-      ],
+      entities: [entitiesGlob],
       synchronize: true,
       logging: false,
     }
@@ -39,8 +46,8 @@ const config: TypeOrmModuleOptions = isTestEnv
           },
         ],
       },
-      entities: ['/usr/src/app/dist/src/domains/**/entities/*.js'],
-      migrations: ['/usr/src/app/dist/src/migrations/*.js'],
+      entities: [entitiesGlob],
+      migrations: [migrationsGlob],
       synchronize: process.env.DB_SYNCRONIZE === 'true',
       migrationsRun: true,
       logging: true,
