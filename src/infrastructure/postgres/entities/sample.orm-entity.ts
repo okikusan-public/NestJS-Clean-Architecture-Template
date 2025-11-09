@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity('sample')
+@Entity('sample_entity')
 export class SampleOrmEntity {
   @PrimaryGeneratedColumn()
   id: number;

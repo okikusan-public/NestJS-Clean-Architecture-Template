@@ -50,6 +50,7 @@ The folder structure follows the principles of Clean Architecture, where each la
 
 Before getting started with the template, ensure that you have the following installed on your local machine:
 
+- **Node.js 22.20.0**: Use `nvm use` if you have Node Version Manager installed.
 - Docker: The template uses Docker to set up the development environment and run the application.
 
 ## Building the Application
@@ -156,12 +157,19 @@ docker exec -it <nestjs container_id> npx typeorm-ts-node-commonjs migration:gen
 
 The application requires the following environment variables to be set. You can use the `.env_sample` file as a reference to create your own `.env` file.
 
-- `DB_HOST`: The hostname of the database server.
-- `DB_PORT`: The port number on which the database server is listening.
-- `DB_USER`: The username for the database connection.
-- `DB_PASSWORD`: The password for the database connection.
-- `DB_NAME`: The name of the database.
-- `DB_SYNCRONIZE`: A boolean value to synchronize the database schema.
+### Database Configuration (Master-Slave Replication)
+
+- `DB_MASTER_HOST`: The hostname of the master database server.
+- `DB_MASTER_PORT`: The port number on which the master database server is listening.
+- `DB_MASTER_USER`: The username for the master database connection.
+- `DB_MASTER_PASSWORD`: The password for the master database connection.
+- `DB_MASTER_NAME`: The name of the master database.
+- `DB_SLAVE_HOST`: The hostname of the slave database server (can be the same as master for local development).
+- `DB_SLAVE_PORT`: The port number on which the slave database server is listening.
+- `DB_SLAVE_USER`: The username for the slave database connection.
+- `DB_SLAVE_PASSWORD`: The password for the slave database connection.
+- `DB_SLAVE_NAME`: The name of the slave database.
+- `DB_SYNCRONIZE`: A boolean value to synchronize the database schema (use `false` in production).
 
 ### Local Environment Variables (Docker)
 
